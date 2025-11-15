@@ -1,0 +1,12 @@
+
+#ignore real config
+config/config.php
+
+# ignore system files
+.DS_Store
+Thumbs.db
+*.log
+*.cache
+.vscode/
+
+
