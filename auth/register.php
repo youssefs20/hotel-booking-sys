@@ -1,9 +1,16 @@
 	<?php require "../includes/header.php"; ?> 
+	<?php require "../config/config.php"; ?> 
 
 	<?php 
 	
+	if(isset($_SESSION['username']))
+    {
+      echo "<script> location.href='".APPURL."'; </script>";
+    }
+	
+
 	if(isset($_POST['submit'])){
-		if(empty($_POST['username'])OR empty($_POST['email']) OR empty($_POST['email'])){
+		if(empty($_POST['username'])OR empty($_POST['email']) OR empty($_POST['password'])){
 			echo "<script> alert('All fields are required'); </script>";
 		}else{
 			$username = $_POST['username'];
@@ -72,7 +79,7 @@
 							
 								<div class="col-md-12">
                                     <div class="form-group">
-                                        <input type="submit" value="Register" class="btn btn-primary py-3 px-4">
+                                        <input type="submit" name="submit"value="Register" class="btn btn-primary py-3 px-4">
                                     </div>
 								</div>
 							</div>
