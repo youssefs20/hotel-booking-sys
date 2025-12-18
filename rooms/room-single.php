@@ -19,9 +19,62 @@
 	$utilities->execute();
 
 	$allUtilities = $utilities->fetchAll(PDO::FETCH_OBJ);
+	
+	//form submission
+	if(isset($_POST['submit'])){
+		if(empty($_POST['email'])OR empty($_POST['phone_number']) OR empty($_POST['full_name'])
+		OR empty($_POST['check_in']) OR empty($_POST['check_out'])){
+			echo "<script> alert('All fields are required'); </script>";
+		}else{
+			$check_in = $_POST['check_in'];
+			$check_out = $_POST['check_out'];
+			$email = $_POST['email'];
+			$phone_number = $_POST['phone_number'];
+			$full_name = $_POST['full_name'];
+			$hotel_name = $singleRoom ->hotel_name;
+			$room_name = $singleRoom ->name;
+			$user_id = $_SESSION['id'];
+			$status = "Pending";
+			$payment= $singleRoom ->price;
 
 
+			//grabbing price through session
+			$_SESSION['price'] = $singleRoom ->price;
 
+
+			if(date("Y/m/d") > $check_in OR date("Y/m/d") < $check_out ){
+				echo "<script> alert('pick a date thats not in the past'); </script>";
+			}else{
+				if($check_in > $check_out 
+				OR $check_in == date("Y/m/d")){
+					echo "<script> alert('check-out date must be after check-in date'); </script>";
+				}
+				else{
+					$booking = $conn->prepare("INSERT INTO bookings (check_in, check_out, email, phone_number, full_name, hotel_name, room_name, status, payment,user_id) 
+					VALUES (:check_in, :check_out, :email, :phone_number, :full_name, :hotel_name, :room_name, :status, :payment, :user_id)");
+
+					$booking->execute([
+						':check_in'=>$check_in,
+						':check_out'=>$check_out,
+						':email'=>$email,
+						':phone_number'=>$phone_number,
+						':full_name'=>$full_name,
+						':hotel_name'=>$hotel_name,
+						':room_name'=>$room_name,
+						':status'=>$status,
+						':payment'=>$payment,
+						':user_id'=>$user_id
+					]);
+
+
+					echo "<script> window.location.href='".APPURL."/rooms/pay.php' </script>";
+					
+
+
+				}
+			}
+		}
+	}
 
 ?>
 
@@ -50,7 +103,7 @@
 				<div class="row justify-content-end">
 					<div class="col-lg-4">
 						<form
-							action="#"
+							action="room-single.php?id = <?php echo $id; ?>" method = "POST"
 							class="appointment-form"
 							style="margin-top: -568px"
 						>
@@ -60,6 +113,7 @@
 									<div class="form-group">
 										<input
 											type="text"
+											name = "email"
 											class="form-control"
 											placeholder="Email"
 										/>
@@ -70,6 +124,7 @@
 									<div class="form-group">
 										<input
 											type="text"
+											name = "full_name"
 											class="form-control"
 											placeholder="Full Name"
 										/>
@@ -80,6 +135,7 @@
 									<div class="form-group">
 										<input
 											type="text"
+											name = "phone_number"
 											class="form-control"
 											placeholder="Phone Number"
 										/>
@@ -96,6 +152,7 @@
 											</div>
 											<input
 												type="text"
+												name = "check_in"
 												class="form-control appointment_date-check-in"
 												placeholder="Check-In"
 											/>
@@ -112,6 +169,7 @@
 										</div>
 										<input
 											type="text"
+											name = "check_out"
 											class="form-control appointment_date-check-out"
 											placeholder="Check-Out"
 										/>
@@ -122,6 +180,7 @@
 									<div class="form-group">
 										<input
 											type="submit"
+											name = "submit"
 											value="Book and Pay Now"
 											class="btn btn-primary py-3 px-4"
 										/>
@@ -218,4 +277,4 @@
 			</div>
 		</section>
 
-<?php require "../includes/footer.php"; ?>
+	<?php require "../includes/footer.php"; ?>

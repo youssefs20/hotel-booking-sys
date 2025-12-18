@@ -5,7 +5,7 @@
 	
 	if(isset($_SESSION['username']))
     {
-      echo "<script> location.href='".APPURL."'; </script>";
+		echo "<script> location.href='".APPURL."'; </script>";
     }
 	
 
