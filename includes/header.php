@@ -57,17 +57,16 @@
 		</div>
 		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	    	<a class="navbar-brand" href="index.html">Vacation<span>Rental</span></a>
+	    	<a class="navbar-brand" href="<?php echo APPURL; ?>">Vacation<span>Rental</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="fa fa-bars"></span> Menu
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	        	<li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-	        	<li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	        	<li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-	        	<li class="nav-item"><a href="rooms.html" class="nav-link">Apartment Room</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+	        	<li class="nav-item active"><a href="<?php echo APPURL; ?>/index.php" class="nav-link">Home</a></li>
+	        	<li class="nav-item"><a href="<?php echo APPURL; ?>/about.php" class="nav-link">About</a></li>
+	        	<li class="nav-item"><a href="<?php echo APPURL; ?>/services.php" class="nav-link">Services</a></li>
+	            <li class="nav-item"><a href="<?php echo APPURL; ?>/contact.php" class="nav-link">Contact</a></li>
 			  <?php if(!isset($_SESSION['username'])) : ?>
 	          <li class="nav-item"><a href="<?php echo APPURL;?>/auth/login.php" class="nav-link">Login</a></li>
 	          <li class="nav-item"><a href="<?php echo APPURL;?>/auth/register.php" class="nav-link">Register</a></li>
@@ -78,9 +77,8 @@
 					<?php echo $_SESSION['username']; ?>
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<li><a class="dropdown-item" href="#">Action</a></li>
-					<li><a class="dropdown-item" href="#">Another action</a></li>
-					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="<?php echo APPURL; ?>/users/bookings.php?id=<?php echo $_SESSION['id']; ?>">your bookings</a></li>
+					<!-- <li><a class="dropdown-item" href="#">Another action</a></li> -->
 					<li><a class="dropdown-item" href="<?php echo APPURL; ?>/auth/logout.php">logout</a></li>
 				</ul>
         	</li>
