@@ -26,8 +26,8 @@
 		OR empty($_POST['check_in']) OR empty($_POST['check_out'])){
 			echo "<script> alert('All fields are required'); </script>";
 		}else{
-			$check_in = $_POST['check_in'];
-			$check_out = $_POST['check_out'];
+			$check_in = date_create($_POST['check_in']);
+			$check_out = date_create($_POST['check_out']);
 			$email = $_POST['email'];
 			$phone_number = $_POST['phone_number'];
 			$full_name = $_POST['full_name'];
@@ -36,10 +36,13 @@
 			$user_id = $_SESSION['id'];
 			$status = "Pending";
 			$payment= $singleRoom ->price;
+			
+			$days= date_diff($check_in, $check_out);
+			
 
 
 			//grabbing price through session
-			$_SESSION['price'] = $singleRoom ->price;
+			$_SESSION['price'] = $singleRoom ->price * intval($days->format('%R%a'));
 
 
 			if(date("Y/m/d") > $check_in OR date("Y/m/d") < $check_out ){
@@ -54,15 +57,15 @@
 					VALUES (:check_in, :check_out, :email, :phone_number, :full_name, :hotel_name, :room_name, :status, :payment, :user_id)");
 
 					$booking->execute([
-						':check_in'=>$check_in,
-						':check_out'=>$check_out,
+						':check_in'=>$_POST['check_in'],
+						':check_out'=>$_POST['check_out'],
 						':email'=>$email,
 						':phone_number'=>$phone_number,
 						':full_name'=>$full_name,
 						':hotel_name'=>$hotel_name,
 						':room_name'=>$room_name,
 						':status'=>$status,
-						':payment'=>$payment,
+						':payment'=>$_SESSION['price'],
 						':user_id'=>$user_id
 					]);
 
@@ -80,7 +83,7 @@
 
 		<div
 			class="hero-wrap js-fullheight"
-			style="background-image: url('<?php echo APPURL; ?>/images/<?php echo $singleRoom->image; ?>')"
+			style="background-image: url('<?php echo APPURL; ?>/images/<?php echo $singleRoom->image; ?>');"
 			data-stellar-background-ratio="0.5"
 		>
 			<div class="overlay"></div>
@@ -103,7 +106,7 @@
 				<div class="row justify-content-end">
 					<div class="col-lg-4">
 						<form
-							action="room-single.php?id = <?php echo $id; ?>" method = "POST"
+						action="room-single.php?id=<?php echo $id; ?>" method="POST"
 							class="appointment-form"
 							style="margin-top: -568px"
 						>
@@ -199,7 +202,7 @@
 					<div class="col-md-6 wrap-about">
 						<div
 							class="img img-2 mb-4"
-							style="background-image: url(<?php echo APPURL; ?>/images/image_2.jpg)"
+							style="background-image: url('<?php echo APPURL; ?>/images/image_2.jpg');"
 						></div>
 						<h2>The most recommended vacation rental</h2>
 						<p>
@@ -251,9 +254,7 @@
 
 		<section
 			class="ftco-intro"
-			style="background-image: url(<?php echo APPURL; ?>/images/image_2.jpg)"
-			data-stellar-background-ratio="0.5"
-		>
+			style="background-image: url('<?php echo APPURL; ?>/images/image_2.jpg');" data-stellar-background-ratio="0.5">
 			<div class="overlay"></div>
 			<div class="container">
 				<div class="row justify-content-center">
@@ -265,12 +266,8 @@
 							questions.
 						</p>
 						<p class="mb-0">
-							<a href="#" class="btn btn-primary px-4 py-3"
-								>Learn More</a
-							>
-							<a href="#" class="btn btn-white px-4 py-3"
-								>Contact us</a
-							>
+							<a href="#" class="btn btn-primary px-4 py-3">Learn More</a>
+							<a href="#" class="btn btn-white px-4 py-3">Contact us</a>
 						</p>
 					</div>
 				</div>
